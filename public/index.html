@@ -3,563 +3,572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="API Documentation for Express API">
-    <meta name="theme-color" content="#ffffff">
-    <title>InuSoft API's.</title>
+    <meta name="description" content="InuSoft API Documentation — Elegant, Modern, and Powerful">
+    <meta name="theme-color" content="#0f172a">
+    <title>InuSoft API · Developer Portal</title>
+    <!-- Tailwind CSS + Syne Font & Material Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'mono': ['Ubuntu Mono', 'monospace'],
-                        'sans': ['Inter', 'system-ui', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
     <style>
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
         ::-webkit-scrollbar {
-            display: none !important;
+            display: none;
         }
-        .glass {
-            backdrop-filter: blur(16px) saturate(180%);
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.125);
+        
+        body {
+            font-family: 'Syne', 'Space Grotesk', system-ui, sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(15, 25, 35, 0.03) 0%, rgba(20, 30, 45, 0.02) 100%),
+                        linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         }
-        .loader {
-            width: 28px;
-            height: 28px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #222;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        
+        /* glass-morphism core */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        
+        .gradient-border {
+            position: relative;
+            background: white;
+            border-radius: 1rem;
         }
-        .btn-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: all 0.3s ease;
+        
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            padding: 1px;
+            background: linear-gradient(130deg, #3b82f6, #a855f7, #ec489a);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
         }
-        .btn-gradient:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.4);
+        
+        .btn-modern {
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            background: linear-gradient(105deg, #0f172a 0%, #1e293b 100%);
+            border: none;
         }
-        .slide-down {
-            animation: slideDown 0.15s ease-out;
+        
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px -12px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(105deg, #1e293b 0%, #0f172a 100%);
         }
-        .slide-up {
-            animation: slideUp 0.15s ease-out;
+        
+        .method-badge {
+            font-size: 0.65rem;
+            padding: 0.25rem 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            border-radius: 40px;
+            font-family: 'Syne', monospace;
+            backdrop-filter: blur(4px);
         }
+        .method-get { background: #10b98120; color: #047857; border: 1px solid #10b98140; }
+        .method-post { background: #3b82f620; color: #1e40af; border: 1px solid #3b82f640; }
+        .method-put { background: #f59e0b20; color: #b45309; border: 1px solid #f59e0b40; }
+        .method-delete { background: #ef444420; color: #b91c1c; border: 1px solid #ef444440; }
+        
+        .endpoint-card {
+            transition: all 0.25s ease;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #eef2ff;
+            border-radius: 20px;
+        }
+        .endpoint-card:hover {
+            transform: translateY(-3px);
+            background: white;
+            border-color: #cbd5e1;
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .animate-slide-down {
+            animation: slideDown 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+        .animate-slide-up {
+            animation: slideUp 0.18s ease forwards;
+        }
+        
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
+            from { opacity: 0; transform: translateY(-12px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes slideUp {
             from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 0; transform: translateY(-8px); visibility: hidden; }
         }
-        .method-badge {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0;
-            font-weight: 600;
-            border: 1px solid #e5e7eb;
+        
+        .category-header {
+            border-radius: 28px;
+            transition: all 0.2s;
         }
-        .method-get { background-color: #10b981; color: white; }
-        .method-post { background-color: #3b82f6; color: white; }
-        .method-put { background-color: #f59e0b; color: white; }
-        .method-delete { background-color: #ef4444; color: white; }
-        .endpoint-card {
-            transition: all 0.2s ease;
-            border: 1px solid #e5e7eb;
+        
+        .stat-number {
+            font-family: 'Syne', monospace;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
-        .endpoint-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        
+        input, select, textarea {
+            font-family: 'Space Grotesk', monospace;
+            transition: all 0.15s;
+        }
+        input:focus, select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.1);
+            outline: none;
+        }
+        
+        .syne-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(125deg, #0f172a 0%, #334155 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-icon {
+            background: linear-gradient(145deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-800 antialiased font-mono min-h-screen">
-    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 py-5"></header>
-    <main class="max-w-4xl mx-auto px-8 py-16">
-        <div class="text-left mb-8">
-            <h1 class="text-3xl font-bold gradient-text mb-2">
-                <span id="title"></span></h1>
-            <p class="text-slate-600 text-sm mx-auto mb-4">
-                <span id="description"></span>
+<body class="antialiased min-h-screen">
+
+    <!-- Sticky Header with Syne elegance -->
+    <header class="sticky top-0 z-50 glass-card border-b border-white/40 py-4 px-6 md:px-8 shadow-sm">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center shadow-md">
+                    <span class="material-icons text-white text-xl">api</span>
+                </div>
+                <h1 class="text-2xl font-bold syne-title tracking-tight">InuSoft<span class="text-slate-500 font-medium"> API</span></h1>
+            </div>
+            <div class="flex gap-3 text-xs font-medium">
+                <a href="https://whatsapp.com/channel/0029Vb6gtmX3QxRyqddFnj04" target="_blank" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/70 text-slate-700 hover:bg-white transition-all border border-slate-200 backdrop-blur-sm">
+                    <span class="material-icons text-sm">chat</span> Channel
+                </a>
+                <a href="https://github.com/synshin9/Restfull-Api/" target="_blank" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/70 text-slate-700 hover:bg-white transition-all border border-slate-200">
+                    <span class="material-icons text-sm">code</span> Source
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-5 md:px-8 py-12">
+        <!-- Hero Section with Syne typography -->
+        <div class="text-left mb-10">
+            <h2 class="text-4xl md:text-5xl font-bold syne-title tracking-tight leading-tight mb-3">
+                <span id="title" class="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">InuSoft API's</span>
+            </h2>
+            <p class="text-slate-600 text-base max-w-2xl leading-relaxed" id="description">
+                Powerful RESTful endpoints — realtime, scalable, and developer-first.
             </p>
-            <p class="mb-4 space-y-1">
-              <a href="https://whatsapp.com/channel/0029Vb6gtmX3QxRyqddFnj04" 
-                 class="block text-xs text-gray-800 font-medium underline hover:text-gray-800 transition-colors">
-                WhatsApp Information Channel.
-              </a>
-              <a href="https://github.com/synshin9/Restfull-Api/" 
-                 class="block text-xs text-gray-800 font-medium underline hover:text-gray-800 transition-colors">
-                Inusoft - Source Code.
-              </a>
-            </p>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-slate-600 mb-2">Servers API's</label>
-                <select id="hostSelect" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-600 bg-white text-slate-900 appearance-none">
-                    <option id="valueURL" value="" selected></option>
+            <div class="flex flex-wrap gap-3 mt-4 text-sm">
+                <span class="inline-flex items-center gap-1 text-slate-500 bg-white/60 px-3 py-1 rounded-full"><span class="material-icons text-sm">bolt</span> High performance</span>
+                <span class="inline-flex items-center gap-1 text-slate-500 bg-white/60 px-3 py-1 rounded-full"><span class="material-icons text-sm">security</span> Secure gateway</span>
+            </div>
+        </div>
+
+        <!-- Server Selector + Stats Row (glassmorphism) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            <div class="md:col-span-2 glass-panel rounded-2xl p-5 border border-white/50 shadow-sm">
+                <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2"><span class="material-icons text-base">dns</span> API Server</label>
+                <select id="hostSelect" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/90 text-slate-800 text-sm font-mono focus:ring-2 focus:ring-blue-400/30 transition">
+                    <option id="valueURL" value="" selected>Loading environments...</option>
                 </select>
+                <p class="text-xs text-slate-400 mt-2">🔌 Select active environment</p>
             </div>
-        </div>
-        <div class="bg-white border border-gray-200 p-4 mb-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="text-center">
-              <div class="text-lg font-bold text-slate-900" id="totalEndpoints">0</div>
-              <div class="text-xs text-slate-600">Total Endpoints</div>
-            </div>
-            <div class="text-center">
-              <div class="text-lg font-bold text-slate-900" id="totalCategories">0</div>
-              <div class="text-xs text-slate-600">Categories</div>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex-1 relative">
-                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                    <span class="material-icons text-gray-400 text-lg">search</span>
+            <div class="glass-panel rounded-2xl p-5 border border-white/50 flex items-center justify-between">
+                <div class="text-center flex-1 border-r border-slate-200/70">
+                    <div class="stat-number text-3xl font-black text-slate-800" id="totalEndpoints">0</div>
+                    <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Endpoints</div>
                 </div>
-                <input type="text" id="searchInput" placeholder="Search API endpoints..." class="w-full pl-12 pr-5 py-4 text-sm border border-gray-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:border-gray-600">
+                <div class="text-center flex-1">
+                    <div class="stat-number text-3xl font-black text-slate-800" id="totalCategories">0</div>
+                    <div class="text-xs font-medium text-slate-500 uppercase tracking-wide">Categories</div>
+                </div>
             </div>
         </div>
 
+        <!-- Search bar with icon & syne style -->
+        <div class="relative mb-8">
+            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                <span class="material-icons text-slate-400 text-xl">search</span>
+            </div>
+            <input type="text" id="searchInput" placeholder="Search endpoints by route, name, method or category..." 
+                   class="w-full pl-12 pr-5 py-4 text-sm rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200/50 transition">
+        </div>
+
+        <!-- Dynamic content area -->
         <div id="content" class="space-y-6">
-            <div id="noResults" class="text-center py-16" style="display: none;">
-                <div class="max-w-md mx-auto">
-                    <h3 class="text-sm text-slate-600 mb-2">No results found.</h3>
-                    <p class="text-xs text-slate-500">Try adjusting your search terms.</p>
-                </div>
+            <div id="noResults" class="text-center py-20 hidden glass-panel rounded-3xl">
+                <span class="material-icons text-5xl text-slate-300 mb-3">search_off</span>
+                <h3 class="text-lg font-semibold text-slate-600">No endpoints found</h3>
+                <p class="text-sm text-slate-500 mt-1">Try a different keyword ✨</p>
             </div>
-
-            <div id="apiList" class="space-y-6">
-                <!-- API endpoints will be dynamically generated here -->
+            <div id="apiList" class="space-y-5">
+                <!-- endpoints injected here -->
             </div>
         </div>
-        <div class="flex flex-col mt-10 text-center space-y-2">
-          <p class="text-slate-500 text-xs">
-            © <span id="year"></span> InuSoft API — All Rights Reserved.
-          </p>
-          <p class="text-slate-500 text-xs space-x-3">
-            <a href="/privacy-policy" class="hover:underline">Privacy Policy</a>
-            <span aria-hidden="true">|</span>
-            <a href="/terms-of-service" class="hover:underline">Terms of Service</a>
-          </p>
+
+        <!-- Footer Syne elegance -->
+        <div class="mt-20 pt-8 border-t border-slate-200/60 flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+            <p class="text-slate-400 text-xs font-mono">© <span id="year"></span> InuSoft API — All intellectual property reserved.</p>
+            <div class="flex gap-6 text-xs text-slate-400">
+                <a href="/privacy-policy" class="hover:text-slate-700 transition">Privacy</a>
+                <a href="/terms-of-service" class="hover:text-slate-700 transition">Terms</a>
+                <span class="flex items-center gap-1"><span class="material-icons text-xs">fiber_manual_record</span> v2.0</span>
+            </div>
         </div>
     </main>
+
     <script>
-      async function loadApiData() {
-        try {
-          const res = await fetch("/openapi.json");
-          const apiData = await res.json();
-          
-          // Group endpoints by category
-          const categories = {};
-          apiData.endpoints.forEach(endpoint => {
-            if (!categories[endpoint.category]) {
-              categories[endpoint.category] = [];
+        // GLOBAL STATE
+        let categoriesData = {};
+        let categoryList = [];
+        
+        async function loadApiData() {
+            try {
+                const res = await fetch("/openapi.json");
+                const apiData = await res.json();
+                
+                // Group endpoints by category
+                const categories = {};
+                apiData.endpoints.forEach(endpoint => {
+                    if (!categories[endpoint.category]) categories[endpoint.category] = [];
+                    categories[endpoint.category].push(endpoint);
+                });
+                
+                const option = document.getElementById('valueURL');
+                option.value = apiData.baseURL;
+                option.textContent = `${apiData.baseURL} — Development`;
+                
+                document.getElementById('title').textContent = apiData.title;
+                document.getElementById('description').textContent = apiData.description;
+                document.getElementById('year').textContent = new Date().getFullYear();
+                document.getElementById('totalEndpoints').textContent = apiData.endpoints.length;
+                document.getElementById('totalCategories').textContent = Object.keys(categories).length;
+                
+                categoriesData = categories;
+                categoryList = Object.keys(categories);
+                renderAPI(categories);
+                
+            } catch (err) {
+                console.error("Failed to load openapi.json:", err);
+                document.getElementById('apiList').innerHTML = `<div class="bg-red-50/80 backdrop-blur rounded-2xl p-8 text-center text-red-700"><span class="material-icons">error</span> Failed to load API spec. Verify /openapi.json exists.</div>`;
             }
-            categories[endpoint.category].push(endpoint);
-          });
-          
-          const option = document.getElementById('valueURL');
-          option.value = apiData.baseURL;
-          option.textContent = `${apiData.baseURL} - Development Server`;
-    
-          // Set Title
-          document.getElementById('title').textContent = apiData.title;
-          // Set Description
-          document.getElementById('description').textContent = apiData.description;
-          // Set Year
-          document.getElementById("year").textContent = new Date().getFullYear();
-          // Count total endpoints and categories
-          document.getElementById('totalEndpoints').textContent = apiData.endpoints.length;
-          // WELL WELL WELL
-          document.getElementById('totalCategories').textContent = Object.keys(categories).length;
-    
-          // Generate HTML for API endpoints
-          const apiList = document.getElementById('apiList');
-          let categoryIndex = 0;
-    
-          for (const [categoryName, endpoints] of Object.entries(categories)) {
-            const categoryGroup = document.createElement('div');
-            categoryGroup.className = 'category-group mb-6';
-            categoryGroup.setAttribute('data-category', categoryName);
-    
-            const categoryHeader = `
-              <div class="mb-4">
-                <div class="bg-white border border-gray-200 shadow-sm">
-                  <button onclick="toggleCategory(${categoryIndex})" class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-150">
-                    <h2 class="font-bold flex items-center text-base">
-                      <span class="material-icons text-lg mr-3 text-gray-800">folder</span>
-                      <span class="truncate max-w-xs text-sm">${categoryName}</span>
-                      <span class="ml-2 text-xs text-gray-800 px-2 py-1">(${endpoints.length})</span>
-                    </h2>
-                    <span class="material-icons transition-transform duration-150" id="category-icon-${categoryIndex}">expand_more</span>
-                  </button>
-                  <div id="category-${categoryIndex}" class="hidden p-4 border-t border-gray-200">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            `;
-    
-            let categoryContent = '';
-            let endpointIndex = 0;
-    
-            endpoints.forEach(endpoint => {
-              // Badge warna untuk method
-              const methodBadges = endpoint.methods.map(method => {
-                let colorClass = 'method-get';
-                if (method === 'POST') colorClass = 'method-post';
-                else if (method === 'PUT') colorClass = 'method-put';
-                else if (method === 'DELETE') colorClass = 'method-delete';
-    
-                return `<span class="method-badge ${colorClass}">${method}</span>`;
-              }).join(' ');
-    
-              categoryContent += `
-                <div class="endpoint-card bg-white border border-gray-200 p-4 api-item" 
-                     data-method="${endpoint.methods[0]}" 
-                     data-path="${endpoint.route}" 
-                     data-alias="${endpoint.name}" 
-                     data-category="${endpoint.category}">
-                  <div class="flex justify-between items-start mb-2">
-                    <div class="flex flex-wrap gap-1">
-                      ${methodBadges}
-                    </div>
-                    <button onclick="toggleEndpoint(${categoryIndex}, ${endpointIndex})" 
-                            class="text-gray-500 hover:text-gray-700 transition-colors">
-                      <span class="material-icons text-lg" id="endpoint-icon-${categoryIndex}-${endpointIndex}">expand_more</span>
-                    </button>
-                  </div>
-    
-                  <h3 class="font-semibold text-sm font-mono mb-1 truncate" title="${endpoint.route}">${endpoint.route}</h3>
-                  <p class="text-xs text-gray-600 mb-3">${endpoint.description}</p>
-    
-                  <div id="endpoint-${categoryIndex}-${endpointIndex}" class="hidden mt-3 pt-3 border-t border-gray-100">
-                    <div class="text-gray-700 font-bold text-xs mb-2 flex items-center">
-                      <span class="material-icons text-sm mr-1">play_arrow</span>
-                      TRY IT OUT
-                    </div>
-                    <form id="form-${categoryIndex}-${endpointIndex}" 
-                          onsubmit="executeRequest(event, ${categoryIndex}, ${endpointIndex}, '${endpoint.methods[0]}', '${endpoint.route}', 'application/json')">
-                      <div class="mb-3 space-y-2">
-              `;
-    
-              // Input parameter
-              Object.entries(endpoint.paramsSchema).forEach(([paramName, paramSchema]) => {
-                if (paramSchema.type === "file") {
-                  categoryContent += `
-                    <div>
-                      <label class="block text-xs font-medium text-slate-600">
-                        ${paramName} ${paramSchema.required ? '<span class="text-red-500">*</span>' : ''}
-                      </label>
-                      <input type="file" name="${paramName}" 
-                            class="w-full text-xs border border-gray-200 p-1 focus:outline-none bg-white"
-                            ${paramSchema.required ? 'required' : ''}>
-                    </div>
-                  `;
-                } else {
-                  categoryContent += `
-                    <div>
-                      <label class="block text-xs font-medium text-slate-600">
-                        ${paramName} ${paramSchema.required ? '<span class="text-red-500">*</span>' : ''}
-                      </label>
-                      <div class="text-xs text-gray-400 mb-1">
-                        Type: ${paramSchema.type}${paramSchema.minLength ? `, Min Length: ${paramSchema.minLength}` : ''}
-                      </div>
-                      <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-200 text-xs focus:outline-none focus:border-gray-600 bg-white placeholder:text-slate-400" 
-                          placeholder="${paramName}" ${paramSchema.required ? 'required' : ''}>
-                    </div>
-                  `;
-                }
-              });
-    
-              if (Object.keys(endpoint.paramsSchema).length === 0) {
-                categoryContent += `
-                  <div class="text-xs text-gray-500 italic">
-                    No parameters required for this endpoint.
-                  </div>
+        }
+        
+        function renderAPI(categories) {
+            const container = document.getElementById('apiList');
+            container.innerHTML = '';
+            let categoryIndexGlobal = 0;
+            
+            for (const [catName, endpoints] of Object.entries(categories)) {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'category-group mb-5';
+                groupDiv.setAttribute('data-category-name', catName);
+                
+                // Header with glass + syne
+                const headerHtml = `
+                    <div class="glass-panel rounded-2xl border border-white/60 overflow-hidden transition-all">
+                        <button onclick="window.toggleCategoryFn(${categoryIndexGlobal})" class="w-full px-6 py-5 flex items-center justify-between hover:bg-white/30 transition-colors group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons text-indigo-500 text-2xl">category</span>
+                                <h2 class="font-bold text-xl syne-title tracking-tight">${escapeHtml(catName)}</h2>
+                                <span class="bg-white/60 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-xs font-mono text-slate-600 border border-slate-200">${endpoints.length}</span>
+                            </div>
+                            <span class="material-icons transition-transform duration-200 text-slate-500" id="category-icon-${categoryIndexGlobal}">expand_more</span>
+                        </button>
+                        <div id="category-${categoryIndexGlobal}" class="hidden p-5 pt-2 border-t border-slate-200/60 bg-white/20">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 `;
-              }
-    
-              categoryContent += `
-                      </div>
-                      <div class="flex">
-                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 font-semibold text-white px-4 py-2 text-xs font-medium transition-colors duration-150">
-                          Execute
-                        </button>
-                        <button type="button" id="clear-${categoryIndex}-${endpointIndex}" onclick="clearResponse(${categoryIndex}, ${endpointIndex})" class="hidden bg-white border border-gray-200 hover:border-gray-600 font-semibold text-slate-900 px-4 py-2 text-xs font-medium transition-colors duration-150 ml-2">
-                          Clear
-                        </button>
-                      </div>
-                    </form>
-    
-                    <div id="response-${categoryIndex}-${endpointIndex}" class="hidden mt-3">
-                      <div class="text-gray-700 font-bold text-xs mb-2 flex items-center">
-                        <span class="material-icons text-sm mr-1">code</span>
-                        RESPONSE
-                      </div>
-                      <div class="bg-gray-900 text-white text-xs p-3">
-                        <div class="max-h-60 overflow-auto" id="response-content-${categoryIndex}-${endpointIndex}"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `;
-    
-              endpointIndex++;
-            });
-    
-            const categoryFooter = `
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `;
-    
-            categoryGroup.innerHTML = categoryHeader + categoryContent + categoryFooter;
-            apiList.appendChild(categoryGroup);
-            categoryIndex++;
-          }
-    
-        } catch (err) {
-          console.error("Gagal load openapi.json:", err);
-        }
-      }
-    
-      loadApiData();
-    
-      // Toggle kategori
-      function toggleCategory(categoryIndex) {
-        const content = document.getElementById(`category-${categoryIndex}`);
-        const icon = document.getElementById(`category-icon-${categoryIndex}`);
-    
-        if (content.classList.contains('hidden')) {
-          content.classList.remove('hidden');
-          content.classList.add('slide-down');
-          icon.style.transform = 'rotate(180deg)';
-        } else {
-          content.classList.add('slide-up');
-          icon.style.transform = 'rotate(0deg)';
-          setTimeout(() => {
-            content.classList.add('hidden');
-            content.classList.remove('slide-up', 'slide-down');
-          }, 150);
-        }
-      }
-    
-      // Toggle endpoint
-      function toggleEndpoint(categoryIndex, endpointIndex) {
-        const content = document.getElementById(`endpoint-${categoryIndex}-${endpointIndex}`);
-        const icon = document.getElementById(`endpoint-icon-${categoryIndex}-${endpointIndex}`);
-    
-        if (content.classList.contains('hidden')) {
-          content.classList.remove('hidden');
-          content.classList.add('slide-down');
-          icon.style.transform = 'rotate(180deg)';
-        } else {
-          content.classList.add('slide-up');
-          icon.style.transform = 'rotate(0deg)';
-          setTimeout(() => {
-            content.classList.add('hidden');
-            content.classList.remove('slide-up', 'slide-down');
-          }, 150);
-        }
-      }
-    
-      function clearResponse(categoryIndex, endpointIndex) {
-        const responseElement = document.getElementById(`response-${categoryIndex}-${endpointIndex}`);
-        const responseContent = document.getElementById(`response-content-${categoryIndex}-${endpointIndex}`);
-        const clearButton = document.getElementById(`clear-${categoryIndex}-${endpointIndex}`);
-    
-        responseElement.classList.add('slide-up');
-        setTimeout(() => {
-          responseElement.classList.add('hidden');
-          responseElement.classList.remove('slide-up', 'slide-down');
-          responseContent.innerHTML = '';
-          clearButton.classList.add('hidden');
-        }, 150);
-      }
-    
-      async function executeRequest(event, categoryIndex, endpointIndex, method, path, contentType) {
-        event.preventDefault();
-    
-        const form = event.target;
-        const responseElement = document.getElementById(`response-${categoryIndex}-${endpointIndex}`);
-        const responseContent = document.getElementById(`response-content-${categoryIndex}-${endpointIndex}`);
-        const clearButton = document.getElementById(`clear-${categoryIndex}-${endpointIndex}`);
-        const hostSelect = document.getElementById('hostSelect');
-        const selectedHost = hostSelect.value;
-        let fullUrl = selectedHost + path;
-    
-        try {
-          let requestConfig = {
-            method: method,
-            headers: {}
-          };
-    
-          if (method === 'GET') {
-            const formData = new FormData(form);
-            const params = new URLSearchParams();
-            for (let [key, value] of formData.entries()) {
-              if (value) {
-                params.append(key, value);
-              }
-            }
-            if (params.toString()) {
-              fullUrl += '?' + params.toString();
-            }
-          } else {
-            const formData = new FormData(form);
-    
-            // cek apakah ada file
-            let hasFile = false;
-            form.querySelectorAll("input[type=file]").forEach(input => {
-              if (input.files.length > 0) hasFile = true;
-            });
-    
-            if (hasFile) {
-              requestConfig.body = formData; // biarkan browser set multipart/form-data
-            } else {
-              const jsonBody = {};
-              for (let [key, value] of formData.entries()) {
-                if (value) {
-                  jsonBody[key] = value;
+                groupDiv.innerHTML = headerHtml;
+                container.appendChild(groupDiv);
+                
+                let innerEndpointsHtml = '';
+                let endpointLocalIndex = 0;
+                
+                for (const endpoint of endpoints) {
+                    const methodSpans = endpoint.methods.map(m => {
+                        let cls = 'method-get';
+                        if (m === 'POST') cls = 'method-post';
+                        else if (m === 'PUT') cls = 'method-put';
+                        else if (m === 'DELETE') cls = 'method-delete';
+                        return `<span class="method-badge ${cls} text-xs font-bold uppercase tracking-wide">${m}</span>`;
+                    }).join('');
+                    
+                    innerEndpointsHtml += `
+                        <div class="endpoint-card p-5 api-item" data-method="${endpoint.methods[0]}" data-path="${endpoint.route.toLowerCase()}" data-alias="${endpoint.name.toLowerCase()}" data-category="${endpoint.category.toLowerCase()}">
+                            <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+                                <div class="flex flex-wrap gap-1.5">${methodSpans}</div>
+                                <button onclick="window.toggleEndpointFn(${categoryIndexGlobal}, ${endpointLocalIndex})" class="text-slate-400 hover:text-slate-700 transition p-1">
+                                    <span class="material-icons text-xl" id="endpoint-icon-${categoryIndexGlobal}-${endpointLocalIndex}">expand_more</span>
+                                </button>
+                            </div>
+                            <div class="font-mono text-sm font-semibold text-slate-800 bg-slate-100/60 inline-block px-2 py-1 rounded-md mb-2">${escapeHtml(endpoint.route)}</div>
+                            <p class="text-slate-500 text-sm mt-1 mb-3 leading-relaxed">${escapeHtml(endpoint.description)}</p>
+                            
+                            <div id="endpoint-${categoryIndexGlobal}-${endpointLocalIndex}" class="hidden mt-4 pt-3 border-t border-slate-100">
+                                <div class="flex items-center gap-1 text-slate-700 text-xs font-bold mb-3"><span class="material-icons text-sm">play_circle</span> TEST ENDPOINT</div>
+                                <form id="form-${categoryIndexGlobal}-${endpointLocalIndex}" onsubmit="window.executeRequest(event, ${categoryIndexGlobal}, ${endpointLocalIndex}, '${endpoint.methods[0]}', '${escapeAttr(endpoint.route)}', 'application/json')">
+                                    <div class="space-y-3 mb-4">
+                    `;
+                    
+                    // Parameters
+                    Object.entries(endpoint.paramsSchema).forEach(([pName, pSchema]) => {
+                        if (pSchema.type === "file") {
+                            innerEndpointsHtml += `
+                                <div class="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">${escapeHtml(pName)} ${pSchema.required ? '<span class="text-rose-500">*</span>' : ''}</label>
+                                    <input type="file" name="${escapeAttr(pName)}" class="w-full text-xs border border-slate-200 rounded-lg p-2 bg-white focus:ring-1 focus:ring-indigo-300" ${pSchema.required ? 'required' : ''}>
+                                </div>
+                            `;
+                        } else {
+                            innerEndpointsHtml += `
+                                <div class="bg-slate-50/60 p-3 rounded-xl">
+                                    <label class="block text-xs font-bold text-slate-700">${escapeHtml(pName)} ${pSchema.required ? '<span class="text-red-500">*</span>' : ''}</label>
+                                    <div class="text-[11px] text-slate-400 mb-1">${pSchema.type} ${pSchema.minLength ? `| min:${pSchema.minLength}` : ''}</div>
+                                    <input type="text" name="${escapeAttr(pName)}" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:border-indigo-300" placeholder="${escapeHtml(pName)} value" ${pSchema.required ? 'required' : ''}>
+                                </div>
+                            `;
+                        }
+                    });
+                    
+                    if (Object.keys(endpoint.paramsSchema).length === 0) {
+                        innerEndpointsHtml += `<div class="text-xs text-slate-400 italic px-1">✨ No parameters needed — just execute</div>`;
+                    }
+                    
+                    innerEndpointsHtml += `
+                                    </div>
+                                    <div class="flex gap-2 flex-wrap">
+                                        <button type="submit" class="btn-modern text-white px-5 py-2 rounded-xl text-xs font-bold tracking-wide shadow-sm transition">Execute Request</button>
+                                        <button type="button" id="clear-${categoryIndexGlobal}-${endpointLocalIndex}" onclick="window.clearResponseFn(${categoryIndexGlobal}, ${endpointLocalIndex})" class="hidden bg-white border border-slate-200 hover:border-slate-400 text-slate-700 px-5 py-2 rounded-xl text-xs font-medium transition">Clear</button>
+                                    </div>
+                                </form>
+                                <div id="response-${categoryIndexGlobal}-${endpointLocalIndex}" class="hidden mt-4">
+                                    <div class="flex items-center gap-1 text-slate-700 text-xs font-bold mb-2"><span class="material-icons text-sm">terminal</span> RESPONSE</div>
+                                    <div class="bg-slate-900 rounded-xl text-white text-xs p-4 overflow-auto max-h-64 font-mono">
+                                        <div id="response-content-${categoryIndexGlobal}-${endpointLocalIndex}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    endpointLocalIndex++;
                 }
-              }
-              if (Object.keys(jsonBody).length > 0) {
-                requestConfig.headers['Content-Type'] = 'application/json';
-                requestConfig.body = JSON.stringify(jsonBody);
-              }
+                
+                const footerDiv = document.createElement('div');
+                footerDiv.innerHTML = innerEndpointsHtml + `</div></div></div>`;
+                const existingWrapper = groupDiv.querySelector(`#category-${categoryIndexGlobal}`);
+                if (existingWrapper) {
+                    existingWrapper.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">${innerEndpointsHtml}</div>`;
+                }
+                categoryIndexGlobal++;
             }
-          }
-    
-          responseContent.innerHTML = '<span class="text-white">Loading...</span>';
-          responseElement.classList.remove('hidden');
-          responseElement.classList.add('slide-down');
-    
-          const response = await fetch(fullUrl, requestConfig);
-          const respContentType = response.headers.get("content-type");
-    
-          let bodyHtml = "";
-          if (respContentType && respContentType.includes("application/json")) {
-            const responseData = await response.json();
-            const jsonString = JSON.stringify(responseData, null, 2);
-            bodyHtml = `<pre class="text-white whitespace-pre-wrap">${jsonString}</pre>`;
-          } else if (respContentType && respContentType.startsWith("image/")) {
-            const blob = await response.blob();
-            const imageUrl = URL.createObjectURL(blob);
-            bodyHtml = `<img src="${imageUrl}" alt="API Image" class="max-w-full rounded border border-gray-700"/>`;
-          } else {
-            const textData = await response.text();
-            bodyHtml = `<pre class="text-white whitespace-pre-wrap">${textData}</pre>`;
-          }
-    
-          const headerHtml = `<div class="text-gray-400 text-xs mb-2">
-              <div>Method: ${method}</div>
-              <div>URL: ${fullUrl}</div>
-              <div>Status: ${response.status} ${response.statusText}</div>
-          </div>`;
-    
-          responseContent.innerHTML = headerHtml + bodyHtml;
-    
-        } catch (error) {
-          responseContent.innerHTML = `
-              <div class="text-gray-400 text-xs mb-2">
-                  <div>Method: ${method}</div>
-                  <div>URL: ${fullUrl}</div>
-                  <div>Status: Error</div>
-              </div>
-              <div class="text-white">Error: ${error.message}</div>
-          `;
-          responseElement.classList.remove('hidden');
-          responseElement.classList.add('slide-down');
-        } finally {
-          clearButton.classList.remove('hidden');
+            
+            // attach window functions after render
+            window.toggleCategoryFn = toggleCategory;
+            window.toggleEndpointFn = toggleEndpoint;
+            window.executeRequest = executeRequest;
+            window.clearResponseFn = clearResponse;
+            attachSearchEvents();
         }
-      }
-    
-      // Search functionality
-      let searchInput, apiItems, noResults, apiListContainer;
-    
-      function applyFilters() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        let visibleCount = 0;
-    
-        const categoryGroups = document.querySelectorAll('.category-group');
-    
-        categoryGroups.forEach(group => {
-          let hasVisibleItems = false;
-          let categoryVisibleCount = 0;
-          const groupItems = group.querySelectorAll('.api-item');
-    
-          groupItems.forEach(item => {
-            const path = item.getAttribute('data-path').toLowerCase();
-            const alias = item.getAttribute('data-alias').toLowerCase();
-            const method = item.getAttribute('data-method').toLowerCase();
-            const category = item.getAttribute('data-category').toLowerCase();
-    
-            const searchMatch = path.includes(searchTerm) ||
-                              alias.includes(searchTerm) ||
-                              method.includes(searchTerm) ||
-                              category.includes(searchTerm);
-    
-            if (searchMatch) {
-              item.style.display = 'block';
-              hasVisibleItems = true;
-              visibleCount++;
-              categoryVisibleCount++;
+        
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
+        function escapeAttr(str) { return str.replace(/['"]/g, ''); }
+        
+        function toggleCategory(catIndex) {
+            const content = document.getElementById(`category-${catIndex}`);
+            const icon = document.getElementById(`category-icon-${catIndex}`);
+            if (!content) return;
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                content.classList.add('animate-slide-down');
+                if(icon) icon.style.transform = 'rotate(180deg)';
             } else {
-              item.style.display = 'none';
+                content.classList.add('animate-slide-up');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+                setTimeout(() => {
+                    content.classList.add('hidden');
+                    content.classList.remove('animate-slide-up', 'animate-slide-down');
+                }, 160);
             }
-          });
-    
-          // Update category count
-          const categoryCount = group.querySelector('span.bg-gray-100');
-          if (categoryCount) {
-            categoryCount.textContent = `${categoryVisibleCount} endpoints`;
-          }
-    
-          if (hasVisibleItems) {
-            group.style.display = 'block';
-          } else {
-            group.style.display = 'none';
-          }
-        });
-    
-        if (visibleCount === 0) {
-          noResults.style.display = 'block';
-          apiListContainer.style.display = 'none';
-        } else {
-          noResults.style.display = 'none';
-          apiListContainer.style.display = 'block';
         }
-      }
-    
-      window.addEventListener('load', () => {
-        searchInput = document.getElementById('searchInput');
-        apiItems = document.querySelectorAll('.api-item');
-        noResults = document.getElementById('noResults');
-        apiListContainer = document.getElementById('apiList');
-    
-        searchInput.addEventListener('input', function() {
-          applyFilters();
-        });
-      });
+        
+        function toggleEndpoint(catIdx, epIdx) {
+            const content = document.getElementById(`endpoint-${catIdx}-${epIdx}`);
+            const icon = document.getElementById(`endpoint-icon-${catIdx}-${epIdx}`);
+            if (!content) return;
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                content.classList.add('animate-slide-down');
+                if(icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('animate-slide-up');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+                setTimeout(() => {
+                    content.classList.add('hidden');
+                    content.classList.remove('animate-slide-up', 'animate-slide-down');
+                }, 150);
+            }
+        }
+        
+        function clearResponse(catIdx, epIdx) {
+            const respDiv = document.getElementById(`response-${catIdx}-${epIdx}`);
+            const contentDiv = document.getElementById(`response-content-${catIdx}-${epIdx}`);
+            const clearBtn = document.getElementById(`clear-${catIdx}-${epIdx}`);
+            if(respDiv) {
+                respDiv.classList.add('animate-slide-up');
+                setTimeout(() => {
+                    respDiv.classList.add('hidden');
+                    respDiv.classList.remove('animate-slide-up');
+                    if(contentDiv) contentDiv.innerHTML = '';
+                    if(clearBtn) clearBtn.classList.add('hidden');
+                }, 120);
+            }
+        }
+        
+        async function executeRequest(event, catIdx, epIdx, method, path, contentType) {
+            event.preventDefault();
+            const form = event.target;
+            const responseDiv = document.getElementById(`response-${catIdx}-${epIdx}`);
+            const responseContentDiv = document.getElementById(`response-content-${catIdx}-${epIdx}`);
+            const clearBtn = document.getElementById(`clear-${catIdx}-${epIdx}`);
+            const hostSelect = document.getElementById('hostSelect');
+            let baseUrl = hostSelect?.value || '';
+            let fullUrl = baseUrl + path;
+            
+            try {
+                let requestConfig = { method, headers: {} };
+                
+                if (method === 'GET') {
+                    const formData = new FormData(form);
+                    const params = new URLSearchParams();
+                    for (let [k,v] of formData.entries()) if(v) params.append(k, v);
+                    if(params.toString()) fullUrl += '?' + params.toString();
+                } else {
+                    const formData = new FormData(form);
+                    let hasFile = false;
+                    form.querySelectorAll("input[type=file]").forEach(inp => { if(inp.files?.length) hasFile = true; });
+                    if (hasFile) {
+                        requestConfig.body = formData;
+                    } else {
+                        const jsonBody = {};
+                        for (let [k,v] of formData.entries()) if(v) jsonBody[k] = v;
+                        if(Object.keys(jsonBody).length) {
+                            requestConfig.headers['Content-Type'] = 'application/json';
+                            requestConfig.body = JSON.stringify(jsonBody);
+                        }
+                    }
+                }
+                
+                responseContentDiv.innerHTML = `<div class="flex items-center gap-2"><div class="loader w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Sending request...</div>`;
+                responseDiv.classList.remove('hidden');
+                responseDiv.classList.add('animate-slide-down');
+                
+                const response = await fetch(fullUrl, requestConfig);
+                const respType = response.headers.get("content-type");
+                let bodyHtml = "";
+                if(respType && respType.includes("application/json")) {
+                    const json = await response.json();
+                    bodyHtml = `<pre class="text-green-300 whitespace-pre-wrap">${JSON.stringify(json, null, 2)}</pre>`;
+                } else if(respType && respType.startsWith("image/")) {
+                    const blob = await response.blob();
+                    const imgUrl = URL.createObjectURL(blob);
+                    bodyHtml = `<img src="${imgUrl}" class="max-w-full rounded-lg border border-slate-600" alt="response image">`;
+                } else {
+                    const text = await response.text();
+                    bodyHtml = `<pre class="text-cyan-200 whitespace-pre-wrap">${escapeHtml(text)}</pre>`;
+                }
+                
+                const metaHtml = `<div class="text-gray-400 text-[11px] mb-3 font-mono border-b border-slate-700 pb-2">⬤ ${method} | ${response.status} ${response.statusText}<br>📍 ${fullUrl}</div>`;
+                responseContentDiv.innerHTML = metaHtml + bodyHtml;
+                clearBtn?.classList.remove('hidden');
+            } catch (err) {
+                responseContentDiv.innerHTML = `<div class="text-red-300">❌ Error: ${escapeHtml(err.message)}</div><div class="text-gray-400 text-xs mt-1">URL: ${fullUrl}</div>`;
+                responseDiv.classList.remove('hidden');
+                clearBtn?.classList.remove('hidden');
+            }
+        }
+        
+        function attachSearchEvents() {
+            const searchInput = document.getElementById('searchInput');
+            const noResultsDiv = document.getElementById('noResults');
+            const apiListDiv = document.getElementById('apiList');
+            if(!searchInput) return;
+            const performFilter = () => {
+                const term = searchInput.value.toLowerCase().trim();
+                let visibleTotal = 0;
+                const groups = document.querySelectorAll('.category-group');
+                groups.forEach(group => {
+                    let groupHasVisible = false;
+                    const items = group.querySelectorAll('.api-item');
+                    items.forEach(item => {
+                        const path = item.getAttribute('data-path') || '';
+                        const alias = item.getAttribute('data-alias') || '';
+                        const method = item.getAttribute('data-method') || '';
+                        const categoryAttr = item.getAttribute('data-category') || '';
+                        const match = path.includes(term) || alias.includes(term) || method.includes(term) || categoryAttr.includes(term);
+                        if(match || term === '') {
+                            item.style.display = '';
+                            groupHasVisible = true;
+                            visibleTotal++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    group.style.display = groupHasVisible ? '' : 'none';
+                });
+                if(visibleTotal === 0 && term !== '') {
+                    noResultsDiv.style.display = 'block';
+                    apiListDiv.style.display = 'none';
+                } else {
+                    noResultsDiv.style.display = 'none';
+                    apiListDiv.style.display = 'block';
+                }
+            };
+            searchInput.addEventListener('input', performFilter);
+        }
+        
+        loadApiData();
     </script>
+    <style>
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spinny 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spinny {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </body>
 </html>
