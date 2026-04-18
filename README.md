@@ -1,4 +1,4 @@
-## InuSoft API
+## BFX API
 
 A lightweight, auto-loading REST API built with Express.js that automatically registers endpoints from the file system. Features elegant documentation and error pages with consistent styling.
 
@@ -21,7 +21,7 @@ InuSoft API is a modern REST API implementation that automatically loads endpoin
 ## Project Structure
 
 ```
-Restfull-Api/
+restapi/
 ├── api/                           # API endpoints (auto-loaded)
 │   ├── ai/                       # AI-related endpoints
 │   │   ├── gpt.js               # GPT chat endpoint
