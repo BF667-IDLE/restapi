@@ -2,7 +2,6 @@
 
 A lightweight, auto-loading REST API built with Express.js that automatically registers endpoints from the file system. Features elegant documentation and error pages with consistent styling.
 
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/synshin9/Restfull-Api)
 
 ## Overview
 
